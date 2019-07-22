@@ -1,4 +1,4 @@
-# [Hello](https://github.com/Bin0212/Narrative_Visualization/hello.html)
+# [Hello](https://bin0212.github.io/Narrative_Visualization/hello)
 
 ## Welcome to GitHub Pages
 
