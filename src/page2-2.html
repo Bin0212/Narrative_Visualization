@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> Page2-1 </title>
+    <title> Page2-2 </title>
     <link rel="stylesheet" type="text/css" href="multiline.css">
     <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
 </head>
@@ -10,7 +10,7 @@
     <center>
         <p>
             <font size="6" face="Arial Black">
-                Life Expectancy (Male) By Countries
+                Life Expectancy (Female) By Countries
             </font>
         </p>
     </center>
@@ -19,7 +19,7 @@
     <script src="multiline.js" charset="utf-8"></script>
 
     <script type="text/javascript">
-        d3.csv('../data/LifeYearCountry-Male.csv', function(error, data) {
+        d3.csv('../data/LifeYearCountry-Female.csv', function(error, data) {
         data.forEach(function (d) {
             d.Year = +d.Year;
             d.Brazil = +d.Brazil;
@@ -49,14 +49,13 @@
         chart.render();
     });
     </script>
-
     <center>
         <p></p>
         <a class="button1" href="page1.html" style="margin-right: 200px">Previous</a>
         <font size="3" face="Arial Black">
-                <a class="scene1" href="page2-1.html">Scene 1-1</a>
+                <a class="scene2" href="page2-1.html">Scene 1-1</a>
                 |
-                <a class="scene2" href="page2-2.html">Scene 1-2</a>
+                <a class="scene1" href="page2-2.html">Scene 1-2</a>
                 |
                 <a class="scene2" href="page2-3.html">Scene 1-3</a>
             </font>
