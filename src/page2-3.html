@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-    
+
 a.button1:link, a.button1:visited {
   width:60px;
   height:20px;
@@ -57,7 +57,8 @@ a.scene2:hover, a.scene2:active {
 <head>
     <meta charset="UTF-8">
     <title> Page2-3 </title>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 </head>
 <body bgcolor="#F0F0E1">
     <center>
@@ -74,25 +75,22 @@ a.scene2:hover, a.scene2:active {
         width = 1000 - margin.left - margin.right,
         height = 547 - margin.top - margin.bottom;
 
-        var x0 = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+        var x0 = d3.scaleBand()
+            .rangeRound([0, width]);
 
-        var x1 = d3.scale.ordinal();
+        var x1 = d3.scaleBand();
 
-        var y = d3.scale.linear()
+        var y = d3.scaleLinear()
             .range([height, 0]);
 
-        var xAxis = d3.svg.axis()
+        var xAxis = d3.axisBottom()
             .scale(x0)
-            .tickSize(0)
-            .orient("bottom");
+            .tickSize(0);
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left");
+        var yAxis = d3.axisLeft()
+            .scale(y);
 
-        var color = d3.scale.ordinal()
-            .range(["#f4a582","#92c5de"]);
+        var color = d3.scaleOrdinal(["#92c5de","#f4a582"])
 
         var svg = d3.select('#chart').append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -106,19 +104,21 @@ a.scene2:hover, a.scene2:active {
           var rateNames = data[0].Values.map(function(d) { return d.Gender; });
 
           x0.domain(categoriesNames);
-          x1.domain(rateNames).rangeRoundBands([0, x0.rangeBand()]);
+          x1.domain(rateNames).rangeRound([5, x0.bandwidth()-5]);
           y.domain([50, 90]);
 
           svg.append("g")
               .attr("class", "x axis")
+              .style("font", "14px times")
               .attr("transform", "translate(0," + height + ")")
               .call(xAxis)
 
           svg.append("g")
               .attr("class", "y axis")
-              .style('opacity','0')
+              .style('opacity','1')
+              .style("font", "14px times")
               .call(yAxis)
-          .append("text")
+          svg.append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 6)
               .attr("dy", ".71em")
@@ -126,22 +126,21 @@ a.scene2:hover, a.scene2:active {
               .style('font-weight','bold')
               .text("Age");
 
-          svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
+          // svg.select('.y').transition().duration(500).delay(1300).style('opacity','1');
 
           var slice = svg.selectAll(".slice")
               .data(data)
               .enter().append("g")
               .attr("class", "g")
               .attr("transform",function(d) { return "translate(" + x0(d.Country) + ",0)"; });
-
           slice.selectAll("rect")
               .data(function(d) { return d.Values; })
           .enter().append("rect")
-              .attr("width", x1.rangeBand())
+              .attr("width", x1.bandwidth())
               .attr("x", function(d) { return x1(d.Gender); })
               .style("fill", function(d) { return color(d.Gender) })
-              .attr("y", function(d) { return y(0); })
-              .attr("height", function(d) { return height - y(0); })
+              .attr("y", function(d) { return 502; })
+              .attr("height", function(d) { return height - 502 ; })
               .on("mouseover", function(d) {
                   d3.select(this).style("fill", d3.rgb(color(d.Gender)).darker(2));
               })
@@ -179,17 +178,46 @@ a.scene2:hover, a.scene2:active {
 
           legend.transition().duration(500).delay(function(d,i){ return 1300 + 100 * i; }).style("opacity","1");
         });
+
+        // add annotation
+        const annotations = [
+        {
+          note: {
+            title: "Largest Life Expectancy Difference in Gender",
+            wrap: 150
+          },
+          connector: {
+            end: "arrow",
+            type: "curve",
+            //can also add a curve type, e.g. curve: d3.curveStep
+            points: [[25, -70]]
+          },
+          x: 578,
+          y: 174,
+          dx: 50,
+          dy: -110
+        }].map(function(d){ d.color = "#ff6961"; return d})
+
+        const makeAnnotations = d3.annotation()
+          .type(d3.annotationLabel)
+          .annotations(annotations)
+
+        svg 
+          .append("g")
+          .attr("class", "annotation-group")
+          .call(makeAnnotations)
+
     </script>
 
     <center>
         <p></p>
         <a class="button1" href="page1.html" style="margin-right: 200px">Previous</a>
         <font size="3" face="Arial Black">
-                <a class="scene2" href="page2-1.html">Scene 1-1</a>
+                <a class="scene2" href="page2-1.html">Scene 2-1</a>
                 |
-                <a class="scene2" href="page2-2.html">Scene 1-2</a>
+                <a class="scene2" href="page2-2.html">Scene 2-2</a>
                 |
-                <a class="scene1" href="page2-3.html">Scene 1-3</a>
+                <a class="scene1" href="page2-3.html">Scene 2-3</a>
             </font>
         <a class="button1" href="page3.html" style="margin-left: 200px" >Next</a>
     </center>

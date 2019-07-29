@@ -1,6 +1,6 @@
 function makeLineChart(dataset, xName, yObjs, axisLables) {
     var chartObj = {};
-    var color = d3.scale.category20();
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
     chartObj.xAxisLable = axisLables.xAxis;
     chartObj.yAxisLable = axisLables.yAxis;
     /*
@@ -50,20 +50,20 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
     chartObj.bisectYear = d3.bisector(chartObj.xFunct).left; //< Can be overridden in definition
 
 //Create scale functions
-    chartObj.xScale = d3.scale.linear().range([0, chartObj.width]).domain(d3.extent(chartObj.data, chartObj.xFunct)); //< Can be overridden in definition
+    chartObj.xScale = d3.scaleLinear().range([0, chartObj.width]).domain(d3.extent(chartObj.data, chartObj.xFunct)); //< Can be overridden in definition
 
 // Get the max of every yFunct
     chartObj.max = function (fn) {
         return d3.max(chartObj.data, fn);
     };
-    chartObj.yScale = d3.scale.linear().range([chartObj.height, 0]).domain([40, 90]);
+    chartObj.yScale = d3.scaleLinear().range([chartObj.height, 0]).domain([40, 90]);
 
     chartObj.formatAsYear = d3.format("");
 
 //Create axis
-    chartObj.xAxis = d3.svg.axis().scale(chartObj.xScale).orient("bottom").tickFormat(chartObj.xFormatter); //< Can be overridden in definition
+    chartObj.xAxis = d3.axisBottom().scale(chartObj.xScale).tickFormat(chartObj.xFormatter); //< Can be overridden in definition
 
-    chartObj.yAxis = d3.svg.axis().scale(chartObj.yScale).orient("left").tickFormat(chartObj.yFormatter); //< Can be overridden in definition
+    chartObj.yAxis = d3.axisLeft().scale(chartObj.yScale).tickFormat(chartObj.yFormatter); //< Can be overridden in definition
 
 
 // Build line building functions
@@ -73,7 +73,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
         };
     }
     for (var yObj in yObjs) {
-        yObjs[yObj].line = d3.svg.line().interpolate("cardinal").x(function (d) {
+        yObjs[yObj].line = d3.line().curve(d3.curveBasis).x(function (d) {
             return chartObj.xScale(chartObj.xFunct(d));
         }).y(getYScaleFn(yObj));
     }
@@ -176,6 +176,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             focus.style("display", "none");
         }).on("mousemove", mousemove);
 
+
         return chartObj;
         function mousemove() {
             var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectYear(dataset, x0, 1), d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
@@ -194,5 +195,112 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
         }
 
     };
+
+    // make annotations for page2-2
+    chartObj.annotation2_1 = function () {
+
+    const annotations = [
+        {
+          //below in makeAnnotations has type set to d3.annotationLabel
+          //you can add this type value below to override that default
+          type: d3.annotationCalloutCircle,
+          note: {
+            title: "Steady Increase of Life Expectancy",
+            wrap: 100
+          },
+          //settings for the subject, in this case the circle radius
+          subject: {
+            radius: 85
+          },
+          x: 750,
+          y: 150,
+          dx: -137,
+          dy: 130
+        },{
+          note: {
+            title: "Significant Decrease of Life Expectancy!",
+            wrap: 120
+          },
+          connector: {
+            end: "dot",
+            type: "curve",
+            //can also add a curve type, e.g. curve: d3.curveStep
+            points: [[-10, 30]]
+          },
+          x: 400,
+          y: 203,
+          dx: -50,
+          dy: 100
+        },{
+          note: {
+            title: "Significant Increase of Life Expectancy",
+            wrap: 120
+          },
+          connector: {
+            end: "dot",
+            type: "curve",
+            //can also add a curve type, e.g. curve: d3.curveStep
+            points: [[-60, -30]]
+          },
+          x: 250,
+          y: 400,
+          dx: -150,
+          dy: -52
+        }].map(function(d){ d.color = "#ff6961"; return d})
+        const makeAnnotations = d3.annotation()
+          .type(d3.annotationLabel)
+          .annotations(annotations)
+
+        chartObj.svg
+          .append("g")
+          .attr("class", "annotation-group")
+          .call(makeAnnotations)
+      };
+
+    // make annotations for page2-2
+    chartObj.annotation2_2 = function () {
+
+    const annotations = [
+        {
+          //below in makeAnnotations has type set to d3.annotationLabel
+          //you can add this type value below to override that default
+          type: d3.annotationCalloutCircle,
+          note: {
+            title: "Steady Increase of Life Expectancy",
+            wrap: 100
+          },
+          //settings for the subject, in this case the circle radius
+          subject: {
+            radius: 85
+          },
+          x: 750,
+          y: 113,
+          dx: -137,
+          dy: 130
+        },{
+          note: {
+            title: "Significant Increase of Life Expectancy",
+            wrap: 120
+          },
+          connector: {
+            end: "dot",
+            type: "curve",
+            //can also add a curve type, e.g. curve: d3.curveStep
+            points: [[-60, -30]]
+          },
+          x: 450,
+          y: 387,
+          dx: -150,
+          dy: -52
+        }].map(function(d){ d.color = "#ff6961"; return d})
+        const makeAnnotations = d3.annotation()
+          .type(d3.annotationLabel)
+          .annotations(annotations)
+
+        chartObj.svg
+          .append("g")
+          .attr("class", "annotation-group")
+          .call(makeAnnotations)
+      };
     return chartObj;
 }
