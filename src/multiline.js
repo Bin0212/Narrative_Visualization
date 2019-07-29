@@ -205,7 +205,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
           //you can add this type value below to override that default
           type: d3.annotationCalloutCircle,
           note: {
-            title: "Steady Increase of Life Expectancy",
+            title: "Steady increase of life expectancy",
             wrap: 100
           },
           //settings for the subject, in this case the circle radius
@@ -218,7 +218,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
           dy: 130
         },{
           note: {
-            title: "Significant Decrease of Life Expectancy!",
+            title: "Significant decrease of life expectancy!",
             wrap: 120
           },
           connector: {
@@ -233,7 +233,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
           dy: 100
         },{
           note: {
-            title: "Significant Increase of Life Expectancy",
+            title: "Significant increase of life expectancy",
             wrap: 120
           },
           connector: {
@@ -266,7 +266,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
           //you can add this type value below to override that default
           type: d3.annotationCalloutCircle,
           note: {
-            title: "Steady Increase of Life Expectancy",
+            title: "Steady increase of life expectancy",
             wrap: 100
           },
           //settings for the subject, in this case the circle radius
@@ -279,7 +279,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
           dy: 130
         },{
           note: {
-            title: "Significant Increase of Life Expectancy",
+            title: "Significant increase of life expectancy",
             wrap: 120
           },
           connector: {
