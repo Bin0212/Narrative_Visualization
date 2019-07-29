@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+
+a.button1:link, a.button1:visited {
+  width:60px;
+  height:20px;
+  background-color: #ff6961;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.button1:hover, a.button1:active {
+  background-color: red;
+}
+
+a.scene1:link, a.scene1:visited {
+  color: black;
+  text-decoration: None;
+}
+
+a.scene1:hover, a.scene1:active {
+  text-decoration:underline;
+}
+
+a.scene2:link, a.scene2:visited {
+  color: gray;
+  text-decoration: None;
+}
+
+a.scene2:hover, a.scene2:active {
+  text-decoration:underline;
+}
+
+.chart {
+    max-width: 950px;
+    min-width: 304px;
+    margin: 0 auto;
+    background-color: #edebe4;
+}
+
+.legend  {
+    min-width: 200px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    font-size: 16px;
+    padding: 10px 40px;
+}
+.legend > div {
+    margin: 0px 25px 10px 0px;
+    flex-grow: 0;
+}
+.legend p {
+    display:inline;
+    font-size: 0.8em;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+.legend .series-marker {
+    height: 1em;
+    width: 1em;
+    border-radius: 35%;
+    background-color: crimson;
+    display: inline-block;
+    margin-right: 4px;
+    margin-bottom: -0.16rem;
+}
+
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title> Page3-1 </title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+</head>
+<body bgcolor="#F0F0E1">
+    <center>
+        <p>
+            <font size="6" face="Arial Black">
+                Life Expectancy vs GDP per Capita (Male)
+            </font>
+        </p>
+    </center>
+    <div class="chart" id="chart"></div>
+
+    <script type="text/javascript">
+        var margin = {top: 15, right: 60, bottom: 30, left: 50};
+        width = 1000 - margin.left - margin.right,
+        height = 547 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#chart")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+        d3.csv("../data/data.csv", function(data) {
+
+          // Add X axis
+          var x = d3.scaleLinear()
+            .domain([40, 90])
+            .range([ 0, width ]);
+          svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+          // Add Y axis
+          var y = d3.scaleLinear()
+            .domain([0, 90000])
+            .range([ height, 0]);
+          svg.append("g")
+            .call(d3.axisLeft(y));
+
+          // Color scale: give me a specie name, I return a color
+          var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+
+          // Highlight the specie that is hovered
+          var highlight = function(d){
+
+            selected_country = d.Country
+
+            d3.selectAll(".dot")
+              .transition()
+              .duration(100)
+              .attr("r", 5)
+
+            d3.selectAll("." + selected_country)
+              .transition()
+              .duration(100)
+              .style("fill", color(selected_country))
+              .attr("r", 7)
+          }
+
+          svg.append('g')
+            .selectAll("dot")
+            .data(data)
+            .enter()
+            .append("circle")
+              .attr("class", function (d) { return "dot " + d.Country } )
+              .attr("cx", function (d) { return x(d.LifeExpectancyMale); } )
+              .attr("cy", function (d) { return y(d.GDPperCapita); } )
+              .attr("r", 5)
+              .style("fill", function (d) { return color(d.Country) } )
+            .on("mouseover", highlight)
+
+          //Draw legend
+          var country = {
+            'Brazil': {column: 'Brazil'},
+            'China': {column: 'China'},
+            'Germany': {column: 'Germany'},
+            'India': {column: 'India'},
+            'Iraq': {column: 'Iraq'},
+            'Japan': {column: 'Japan'},
+            'Russian': {column: 'RussianFederation'},
+            'Switzerland': {column: 'Switzerland'},
+            'United States': {column: 'UnitedStates'},
+            'Zimbabwe': {column: 'Zimbabwe'}
+          }
+
+          var legend = d3.select('#chart').append('div').attr("class", "legend");
+          console.log(country)
+          for (var y  in country) {
+              series = legend.append('div');
+              series.append('div').attr("class", "series-marker").style("background-color", color(y));
+              series.append('p').text(y);
+              country[y].legend = series;
+          }
+        })
+
+        svg.append("text")             
+              .attr("transform",
+                    "translate(" + (width ) + " ," + 
+                                   (height + margin.top - 20) + ")")
+              .style('font-weight','bold')
+              .style("text-anchor", "end")
+              .text("Life Expectancy (Male)");
+        svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 6)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+              .style('font-weight','bold')
+              .text("GDP per Capita");
+        // add annotation
+        const annotations = [
+        {
+          note: {
+            title: "Both GDP per Capita and life expectancy decrease significantly",
+            wrap: 170
+          },
+          connector: {
+            end: "arrow"
+          },
+          x: 430,
+          y: 470,
+          dx: -150,
+          dy: -20
+        },{
+          note: {
+            title: "GDP per Capita increases as life expectancy increases.",
+            wrap: 150
+          },
+          connector: {
+            end: "arrow",
+            type: "curve",
+            points: [[-35, 70]]
+          },
+          x: 578,
+          y: 174,
+          dx: -80,
+          dy: 130
+        }].map(function(d){ d.color = "#ff6961"; return d})
+
+        const makeAnnotations = d3.annotation()
+          .type(d3.annotationLabel)
+          .annotations(annotations)
+
+        svg 
+          .append("g")
+          .attr("class", "annotation-group")
+          .call(makeAnnotations)
+
+    </script>
+
+    <center>
+        <p></p>
+        <a class="button1" href="page2-1.html" style="margin-right: 250px">Previous</a>
+        <font size="3" face="Arial Black">
+                <a class="scene1" href="page3-1.html">Scene 3-1</a>
+                |
+                <a class="scene2" href="page3-2.html">Scene 3-2</a>
+            </font>
+        <a class="button1" href="page4.html" style="margin-left: 250px" >Next</a>
+    </center>
+</body>
+</html>
