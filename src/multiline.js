@@ -9,7 +9,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
      */
 
     chartObj.data = dataset;
-    chartObj.margin = {top: 15, right: 60, bottom: 30, left: 50};
+    chartObj.margin = {top: 5, right: 60, bottom: 30, left: 50};
     chartObj.width = 650 - chartObj.margin.left - chartObj.margin.right;
     chartObj.height = 480 - chartObj.margin.top - chartObj.margin.bottom;
 
@@ -243,7 +243,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             points: [[-10, 30]]
           },
           x: 400,
-          y: 203,
+          y: 209,
           dx: -50,
           dy: 100
         },{
@@ -258,7 +258,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             points: [[-60, -30]]
           },
           x: 250,
-          y: 400,
+          y: 408,
           dx: -150,
           dy: -52
         }].map(function(d){ d.color = "#ff6961"; return d})
@@ -304,7 +304,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             points: [[-60, -30]]
           },
           x: 450,
-          y: 387,
+          y: 396,
           dx: -150,
           dy: -52
         }].map(function(d){ d.color = "#ff6961"; return d})
