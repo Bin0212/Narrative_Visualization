@@ -176,8 +176,23 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             focus.style("display", "none");
         }).on("mousemove", mousemove);
 
+        chartObj.svg.append("text")             
+              .attr("transform",
+                    "translate(" + (chartObj.width) + " ," + 
+                                   (chartObj.height + chartObj.margin.top - 20) + ")")
+              .style('font-weight','bold')
+              .style("text-anchor", "end")
+              .text("Year");
+        chartObj.svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 6)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+              .style('font-weight','bold')
+              .text("Life Expectancy");
 
         return chartObj;
+
         function mousemove() {
             var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectYear(dataset, x0, 1), d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
             try {
