@@ -1,4 +1,4 @@
-# [Hello](https://bin0212.github.io/Narrative_Visualization/src/page1)
+# [LIFE EXPECTANCY (CS 498 Final Project](https://bin0212.github.io/Narrative_Visualization/src/page1)
 
 ## Welcome to GitHub Pages
 
