@@ -1,4 +1,4 @@
-# [LIFE EXPECTANCY ANALYSIS(CS 498 Final Project)](https://bin0212.github.io/Narrative_Visualization/src/page1)
+# [LIFE EXPECTANCY ANALYSIS (CS 498 Final Project)](https://bin0212.github.io/Narrative_Visualization/src/page1)
 
 ## Messaging
 In this narrative visualization, **life expectancy** in the selected 10 countries is the main topic I investigated. The messages I want to convey are how the life expectancies are different among countries, between genders, and how it is related to the GDP per Capita in these countries. After visualizing life expectancy by countries, viewers can observe which countries have longer or shorter life expectancy. Viewers may also note the life expectancy difference between male and female (i.e. female has longer life expectancy than male) which is validated in scene 2-3. After exploring the main scene 2, we found that the life expectancy has some sort of relationship with the economy condition of the country. Then viewers can dig more into main scene 3 to see how GDP per Capita is related with life expectancy. And it is found that normally higher GDP per Capita leads to longer life expectancy.
